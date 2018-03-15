@@ -84,7 +84,8 @@ RCT_EXPORT_METHOD(setup:(NSDictionary *)options)
 }
 
 RCT_REMAP_METHOD(checkIfBusy,
-                 checkIfBusyWithResolver:(RCTPromiseResolveBlock)resolve)
+                 checkIfBusyWithResolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject)
 {
 #ifdef DEBUG
     NSLog(@"[RNCallKit][checkIfBusy]");
