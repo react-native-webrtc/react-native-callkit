@@ -83,6 +83,15 @@ RCT_EXPORT_METHOD(setup:(NSDictionary *)options)
     [self.callKitProvider setDelegate:self queue:nil];
 }
 
+RCT_REMAP_METHOD(checkIfBusy,
+                 checkIfBusyWithResolver:(RCTPromiseResolveBlock)resolve)
+{
+#ifdef DEBUG
+    NSLog(@"[RNCallKit][checkIfBusy]");
+#endif
+    resolve(@(self.callKitCallController.callObserver.calls.count > 0));
+}
+
 #pragma mark - CXCallController call actions
 
 // Display the incoming call to the user
