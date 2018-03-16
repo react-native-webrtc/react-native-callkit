@@ -19,8 +19,6 @@ const RNCallKitDidDisplayIncomingCall = 'RNCallKitDidDisplayIncomingCall';
 const RNCallKitDidPerformSetMutedCallAction = 'RNCallKitDidPerformSetMutedCallAction';
 
 export default class RNCallKit {
-    static checkIfBusy = _RNCallKit.checkIfBusy;
-
     static addEventListener(type, handler) {
         if (Platform.OS !== 'ios') return;
         var listener;
