@@ -124,7 +124,7 @@ continueUserActivity:(NSUserActivity *)userActivity
   - **ringtoneSound**: string (optional)
     - If provided, it will be played when incoming calls received; the system will use the default ringtone if this is not provided
 
-Initialise RNCallKit with options
+Initialize RNCallKit with options
 
 ### displayIncomingCall
 
@@ -166,10 +166,13 @@ Call when you finish an incoming/outgoing call
 
 Switch the mic on/off
 
+<<<<<<< HEAD
 ### checkIfBusy
 
 Checks if there are any active calls on the device and returns a promise with a boolean value (`true` if there're active calls, `false` otherwise).
 
+=======
+>>>>>>> setMute method and event handler added.
 ## Events
 
 ### - didReceiveStartCallAction
@@ -245,7 +248,7 @@ import uuid from 'uuid';
 class RNCallKitExample extends React.Component {
   constructor(props) {
 
-    // Initialise RNCallKit
+    // Initialize RNCallKit
     let options = {
         appName: 'RNCallKitExample',
         imageName: 'my_image_name_in_bundle',
