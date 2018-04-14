@@ -104,14 +104,7 @@ export default class RNCallKit {
         _RNCallKit.endAllCalls();
     }
 
-<<<<<<< HEAD
-    static setMutedCAll(uuid, muted) {
-        if (Platform.OS !== 'ios') return;
-        _RNCallKit.setMutedCall(uuid, muted);
-    }
-=======
     static checkIfBusy = _RNCallKit.checkIfBusy;
->>>>>>> checkIfBusy method moved to the bottom of index.js
 
     /*
     static setHeldCall(uuid, onHold) {
