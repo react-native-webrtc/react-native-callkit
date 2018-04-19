@@ -104,7 +104,11 @@ export default class RNCallKit {
         _RNCallKit.endAllCalls();
     }
 
-    static checkIfBusy = _RNCallKit.checkIfBusy;
+    static checkIfBusy() {
+      return Platform.OS === 'ios'
+        ? _RNCallKit.checkIfBusy()
+        : Promise.reject('RNCallKit.checkIfBusy was called from unsupported OS');
+    };
 
     /*
     static setHeldCall(uuid, onHold) {
