@@ -30,6 +30,7 @@ static NSString *const RNCallKitDidPerformSetMutedCallAction = @"RNCallKitDidPer
     NSMutableDictionary *_settings;
     NSOperatingSystemVersion _version;
     BOOL _isStartCallActionEventListenerAdded;
+    NSUUID *_lastUUID;
 }
 
 // should initialise in AppDelegate.m
@@ -107,6 +108,7 @@ RCT_EXPORT_METHOD(displayIncomingCall:(NSString *)uuidString
 #endif
     int _handleType = [self getHandleType:handleType];
     NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidString];
+    _lastUUID = uuid;
     CXCallUpdate *callUpdate = [[CXCallUpdate alloc] init];
     callUpdate.remoteHandle = [[CXHandle alloc] initWithType:_handleType value:handle];
     callUpdate.supportsDTMF = YES;
@@ -194,6 +196,7 @@ RCT_EXPORT_METHOD(_startCallActionEventListenerAdded)
 RCT_EXPORT_METHOD(reportConnectedOutgoingCallWithUUID:(NSString *)uuidString)
 {
     NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidString];
+    _lastUUID = uuid;
     [self.callKitProvider reportOutgoingCallWithUUID:uuid connectedAtDate:[NSDate date]];
 }
 
