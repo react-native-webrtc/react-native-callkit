@@ -2,12 +2,12 @@
 
 import {
     NativeModules,
-    NativeEventEmitter,
     Platform,
 } from 'react-native';
 
+import listeners from './actions/actions'
+
 const _RNCallKit = NativeModules.RNCallKit;
-const _RNCallKitEmitter = new NativeEventEmitter(_RNCallKit);
 
 const _callkitEventHandlers = new Map();
 
@@ -19,42 +19,10 @@ const RNCallKitDidDisplayIncomingCall = 'RNCallKitDidDisplayIncomingCall';
 const RNCallKitDidPerformSetMutedCallAction = 'RNCallKitDidPerformSetMutedCallAction';
 
 export default class RNCallKit {
+
     static addEventListener(type, handler) {
         if (Platform.OS !== 'ios') return;
-        var listener;
-        if (type === 'didReceiveStartCallAction') {
-            listener = _RNCallKitEmitter.addListener(
-                RNCallKitDidReceiveStartCallAction,
-                (data) => { handler(data);}
-            );
-            _RNCallKit._startCallActionEventListenerAdded();
-        } else if (type === 'answerCall') {
-            listener = _RNCallKitEmitter.addListener(
-                RNCallKitPerformAnswerCallAction,
-                (data) => { handler(data);}
-            );
-        } else if (type === 'endCall') {
-            listener = _RNCallKitEmitter.addListener(
-                RNCallKitPerformEndCallAction,
-                (data) => { handler(data); }
-            );
-        } else if (type === 'didActivateAudioSession') {
-            listener = _RNCallKitEmitter.addListener(
-                RNCallKitDidActivateAudioSession,
-                () => { handler(); }
-            );
-        } else if (type === 'didDisplayIncomingCall') {
-            listener = _RNCallKitEmitter.addListener(
-                RNCallKitDidDisplayIncomingCall,
-                (data) => { handler(data.error); }
-            );
-        } else if (type === 'didPerformSetMutedCallAction') {
-          listener = _RNCallKitEmitter.addListener(
-            RNCallKitDidPerformSetMutedCallAction,
-            (data) => { handler(data.muted); }
-          );
-        }
-
+        const listener = listeners[type](handler)
         _callkitEventHandlers.set(handler, listener);
     }
 
