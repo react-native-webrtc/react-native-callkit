@@ -5,7 +5,7 @@ import {
     Platform,
 } from 'react-native';
 
-import listeners from './actions/actions'
+import { listeners } from './actions/actions'
 
 const _RNCallKit = NativeModules.RNCallKit;
 

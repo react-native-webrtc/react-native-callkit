@@ -6,7 +6,7 @@ import {
 const _RNCallKit = NativeModules.RNCallKit;
 const _RNCallKitEmitter = new NativeEventEmitter(_RNCallKit);
 
-const listeners = {}
+export const listeners = {}
 
 didReceiveStartCallAction = handler => {
     _RNCallKit._startCallActionEventListenerAdded();
@@ -57,5 +57,3 @@ listeners.endCall = endCall
 listeners.didActivateAudioSession = didActivateAudioSession
 listeners.didDisplayIncomingCall = didDisplayIncomingCall
 listeners.didPerformSetMutedCallAction = didPerformSetMutedCallAction
-
-export default listeners;
