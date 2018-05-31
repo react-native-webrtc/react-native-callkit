@@ -6,7 +6,7 @@ import {
 const _RNCallKit = NativeModules.RNCallKit;
 const _RNCallKitEmitter = new NativeEventEmitter(_RNCallKit);
 
-export const listeners = {}
+export const listeners = {};
 
 didReceiveStartCallAction = handler => {
     _RNCallKit._startCallActionEventListenerAdded();
@@ -23,28 +23,28 @@ answerCall = handler => {
     );
 }
 
-endCall = hander => {
+endCall = handler => {
     return _RNCallKitEmitter.addListener(
         RNCallKitPerformEndCallAction,
         (data) => { handler(data); }
     );
 }
 
-didActivateAudioSession = hander => {
+didActivateAudioSession = handler => {
     return _RNCallKitEmitter.addListener(
         RNCallKitDidActivateAudioSession,
         () => { handler(); }
     );
 }
 
-didDisplayIncomingCall = hander => {
+didDisplayIncomingCall = handler => {
     return _RNCallKitEmitter.addListener(
         RNCallKitDidDisplayIncomingCall,
         (data) => { handler(data.error); }
     );
 }
 
-didPerformSetMutedCallAction = hander => {
+didPerformSetMutedCallAction = handler => {
     return _RNCallKitEmitter.addListener(
         RNCallKitDidPerformSetMutedCallAction,
         (data) => { handler(data.muted); }
