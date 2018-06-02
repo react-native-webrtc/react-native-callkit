@@ -5,18 +5,11 @@ import {
     Platform,
 } from 'react-native';
 
-import { listeners } from './actions/actions'
+import { listeners } from './actions'
 
 const _RNCallKit = NativeModules.RNCallKit;
 
 const _callkitEventHandlers = new Map();
-
-const RNCallKitDidReceiveStartCallAction = 'RNCallKitDidReceiveStartCallAction';
-const RNCallKitPerformAnswerCallAction = 'RNCallKitPerformAnswerCallAction';
-const RNCallKitPerformEndCallAction = 'RNCallKitPerformEndCallAction';
-const RNCallKitDidActivateAudioSession = 'RNCallKitDidActivateAudioSession';
-const RNCallKitDidDisplayIncomingCall = 'RNCallKitDidDisplayIncomingCall';
-const RNCallKitDidPerformSetMutedCallAction = 'RNCallKitDidPerformSetMutedCallAction';
 
 export default class RNCallKit {
 

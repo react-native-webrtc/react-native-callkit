@@ -6,7 +6,14 @@ import {
 const _RNCallKit = NativeModules.RNCallKit;
 const _RNCallKitEmitter = new NativeEventEmitter(_RNCallKit);
 
-export const listeners = {};
+const RNCallKitDidReceiveStartCallAction = 'RNCallKitDidReceiveStartCallAction';
+const RNCallKitPerformAnswerCallAction = 'RNCallKitPerformAnswerCallAction';
+const RNCallKitPerformEndCallAction = 'RNCallKitPerformEndCallAction';
+const RNCallKitDidActivateAudioSession = 'RNCallKitDidActivateAudioSession';
+const RNCallKitDidDisplayIncomingCall = 'RNCallKitDidDisplayIncomingCall';
+const RNCallKitDidPerformSetMutedCallAction = 'RNCallKitDidPerformSetMutedCallAction';
+
+const listeners = {};
 
 didReceiveStartCallAction = handler => {
     _RNCallKit._startCallActionEventListenerAdded();
@@ -51,9 +58,12 @@ didPerformSetMutedCallAction = handler => {
       );
 }
 
-listeners.didReceiveStartCallAction = didReceiveStartCallAction
-listeners.answerCall = answerCall
-listeners.endCall = endCall
-listeners.didActivateAudioSession = didActivateAudioSession
-listeners.didDisplayIncomingCall = didDisplayIncomingCall
-listeners.didPerformSetMutedCallAction = didPerformSetMutedCallAction
+listeners.didReceiveStartCallAction = didReceiveStartCallAction;
+listeners.answerCall = answerCall;
+listeners.endCall = endCall;
+listeners.didActivateAudioSession = didActivateAudioSession;
+listeners.didDisplayIncomingCall = didDisplayIncomingCall;
+listeners.didPerformSetMutedCallAction = didPerformSetMutedCallAction;
+
+export { listeners };
+
