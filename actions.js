@@ -16,11 +16,12 @@ const RNCallKitDidPerformSetMutedCallAction = 'RNCallKitDidPerformSetMutedCallAc
 const listeners = {};
 
 didReceiveStartCallAction = handler => {
-    _RNCallKit._startCallActionEventListenerAdded();
-    return _RNCallKitEmitter.addListener(
+    const listener = _RNCallKitEmitter.addListener(
         RNCallKitDidReceiveStartCallAction,
         (data) => { handler(data);}
     );
+    _RNCallKit._startCallActionEventListenerAdded();
+    return listener;
 }
 
 answerCall = handler => {
