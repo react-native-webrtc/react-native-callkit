@@ -13,8 +13,6 @@ const RNCallKitDidActivateAudioSession = 'RNCallKitDidActivateAudioSession';
 const RNCallKitDidDisplayIncomingCall = 'RNCallKitDidDisplayIncomingCall';
 const RNCallKitDidPerformSetMutedCallAction = 'RNCallKitDidPerformSetMutedCallAction';
 
-const listeners = {};
-
 didReceiveStartCallAction = handler => {
     const listener = _RNCallKitEmitter.addListener(
         RNCallKitDidReceiveStartCallAction,
@@ -59,12 +57,12 @@ didPerformSetMutedCallAction = handler => {
       );
 }
 
-listeners.didReceiveStartCallAction = didReceiveStartCallAction;
-listeners.answerCall = answerCall;
-listeners.endCall = endCall;
-listeners.didActivateAudioSession = didActivateAudioSession;
-listeners.didDisplayIncomingCall = didDisplayIncomingCall;
-listeners.didPerformSetMutedCallAction = didPerformSetMutedCallAction;
-
-export { listeners };
+export const listeners = { 
+    didReceiveStartCallAction: didReceiveStartCallAction,
+    answerCall: answerCall,
+    endCall: endCall,
+    didActivateAudioSession: didActivateAudioSession,
+    didDisplayIncomingCall: didDisplayIncomingCall,
+    didPerformSetMutedCallAction: didPerformSetMutedCallAction,
+};
 
