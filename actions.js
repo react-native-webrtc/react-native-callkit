@@ -58,11 +58,11 @@ didPerformSetMutedCallAction = handler => {
 }
 
 export const listeners = { 
-    didReceiveStartCallAction: didReceiveStartCallAction,
-    answerCall: answerCall,
-    endCall: endCall,
-    didActivateAudioSession: didActivateAudioSession,
-    didDisplayIncomingCall: didDisplayIncomingCall,
-    didPerformSetMutedCallAction: didPerformSetMutedCallAction,
+    didReceiveStartCallAction,
+    answerCall,
+    endCall,
+    didActivateAudioSession,
+    didDisplayIncomingCall,
+    didPerformSetMutedCallAction,
 };
 
