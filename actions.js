@@ -22,40 +22,40 @@ didReceiveStartCallAction = handler => {
     return listener;
 }
 
-answerCall = handler => {
-    return _RNCallKitEmitter.addListener(
+answerCall = handler => (
+    _RNCallKitEmitter.addListener(
         RNCallKitPerformAnswerCallAction,
         (data) => { handler(data);}
-    );
-}
+    )
+)
 
-endCall = handler => {
-    return _RNCallKitEmitter.addListener(
+endCall = handler => (
+    _RNCallKitEmitter.addListener(
         RNCallKitPerformEndCallAction,
         (data) => { handler(data); }
-    );
-}
+    )
+)
 
-didActivateAudioSession = handler => {
-    return _RNCallKitEmitter.addListener(
+didActivateAudioSession = handler => (
+    _RNCallKitEmitter.addListener(
         RNCallKitDidActivateAudioSession,
         () => { handler(); }
-    );
-}
+    )
+)
 
-didDisplayIncomingCall = handler => {
-    return _RNCallKitEmitter.addListener(
+didDisplayIncomingCall = handler => (
+    _RNCallKitEmitter.addListener(
         RNCallKitDidDisplayIncomingCall,
         (data) => { handler(data.error); }
-    );
-}
+    )
+)
 
-didPerformSetMutedCallAction = handler => {
-    return _RNCallKitEmitter.addListener(
+didPerformSetMutedCallAction = handler => (
+    _RNCallKitEmitter.addListener(
         RNCallKitDidPerformSetMutedCallAction,
         (data) => { handler(data.muted); }
-      );
-}
+    )
+)
 
 export const listeners = { 
     didReceiveStartCallAction,
