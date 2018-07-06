@@ -445,7 +445,7 @@ continueUserActivity:(NSUserActivity *)userActivity
     }
     NSString *callUUID = [self containsLowerCaseLetter:action.callUUID.UUIDString] ? action.callUUID.UUIDString : [action.callUUID.UUIDString lowercaseString];
     [self sendEventWithName:RNCallKitPerformAnswerCallAction body:@{ @"callUUID": callUUID }];
-    [action fulfill];
+    answerCallAction = action;
 }
 
 // Ending incoming call
@@ -456,7 +456,7 @@ continueUserActivity:(NSUserActivity *)userActivity
 #endif
     NSString *callUUID = [self containsLowerCaseLetter:action.callUUID.UUIDString] ? action.callUUID.UUIDString : [action.callUUID.UUIDString lowercaseString];
     [self sendEventWithName:RNCallKitPerformEndCallAction body:@{ @"callUUID": callUUID }];
-    answerCallAction = action;
+    [action fulfill];
 }
 
 - (void)provider:(CXProvider *)provider performSetHeldCallAction:(CXSetHeldCallAction *)action
