@@ -178,7 +178,7 @@ Checks if the device speaker is on and returns a promise with a boolean value (`
 
 Please, call this method when you establish or lose connection while answering. It transitions a call from `connecting` state to either `connected` or `failed`.
 
-**connected**: boolean (default value is `true`)
+- **connected**: boolean (default value is `true`)
 
 ## Events
 
