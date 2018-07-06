@@ -174,6 +174,12 @@ Checks if there are any active calls on the device and returns a promise with a 
 
 Checks if the device speaker is on and returns a promise with a boolean value (`true` if speaker is on, `false` otherwise).
 
+### updateConnectionState
+
+Please, call this method when you establish or lose connection while answering. It transitions a call from `connecting` state to either `connected` or `failed`.
+
+**connected**: boolean (default value is `true`)
+
 ## Events
 
 ### - didReceiveStartCallAction
@@ -207,12 +213,6 @@ Note: Please, do not forget to call `updateConnectionState` when connection is e
   callUUID: 'f0ee907b-6dbd-45a8-858a-903decb198f8' // The UUID of the call that is to be answered
 }
 ```
-
-### - updateConnectionState
-
-Please, call this method when you establish or lose connection while answering. It transitions a call from `connecting` state to either `connected` or `failed`.
-
-**connected**: boolean (default value is `true`)
 
 ### - endCall
 
