@@ -198,6 +198,8 @@ User answer the incoming call
 
 Do your normal `Answering` actions here
 
+Note: Please, do not forget to call `updateConnectionState` when connection is established or failed.
+
 **data**:
 
 ```javascript
