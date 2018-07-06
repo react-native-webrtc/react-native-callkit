@@ -206,6 +206,12 @@ Do your normal `Answering` actions here
 }
 ```
 
+### - updateConnectionState
+
+Please, call this method when you establish or lose connection while answering. It transitions a call from `connecting` state to either `connected` or `failed`.
+
+**connected**: boolean (default value is `true`)
+
 ### - endCall
 
 User finish the call
@@ -288,6 +294,10 @@ class RNCallKitExample extends React.Component {
      * Try to do your normal Answering actions here
      *
      * e.g. this.handleAnswerCall(data.callUUID);
+     *
+     * Call RNCallKit.updateConnectionState(true) if connection is established
+     *
+     * or RNCallKit.updateConnectionState(false) if connection is failed
      */
   }
 

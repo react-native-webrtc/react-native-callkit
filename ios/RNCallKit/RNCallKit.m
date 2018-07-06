@@ -30,6 +30,7 @@ static NSString *const RNCallKitDidPerformSetMutedCallAction = @"RNCallKitDidPer
     NSMutableDictionary *_settings;
     NSOperatingSystemVersion _version;
     BOOL _isStartCallActionEventListenerAdded;
+    CXAnswerCallAction *answerCallAction;
 }
 
 // should initialise in AppDelegate.m
@@ -219,6 +220,18 @@ RCT_EXPORT_METHOD(setMutedCall:(NSString *)uuidString muted:(BOOL)muted)
     [transaction addAction:setMutedAction];
 
     [self requestTransaction:transaction];
+}
+
+RCT_EXPORT_METHOD(updateConnectionState:(BOOL )connected)
+{
+#ifdef DEBUG
+    NSLog(@"[RNCallKit][updateConnectionState]");
+#endif
+    if (connected) {
+        [answerCallAction fulfill];
+    } else {
+        [answerCallAction fail];
+    }
 }
 
 - (void)requestTransaction:(CXTransaction *)transaction
@@ -443,7 +456,7 @@ continueUserActivity:(NSUserActivity *)userActivity
 #endif
     NSString *callUUID = [self containsLowerCaseLetter:action.callUUID.UUIDString] ? action.callUUID.UUIDString : [action.callUUID.UUIDString lowercaseString];
     [self sendEventWithName:RNCallKitPerformEndCallAction body:@{ @"callUUID": callUUID }];
-    [action fulfill];
+    answerCallAction = action;
 }
 
 - (void)provider:(CXProvider *)provider performSetHeldCallAction:(CXSetHeldCallAction *)action
