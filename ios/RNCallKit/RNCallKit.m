@@ -15,7 +15,7 @@
 
 #import <AVFoundation/AVAudioSession.h>
 
-static int const DelayInSeconds = 3;
+static NSNotification *startCallNotification = nil;
 
 static NSString *const RNCallKitHandleStartCallNotification = @"RNCallKitHandleStartCallNotification";
 static NSString *const RNCallKitDidReceiveStartCallAction = @"RNCallKitDidReceiveStartCallAction";
@@ -200,6 +200,11 @@ RCT_EXPORT_METHOD(setHeldCall:(NSString *)uuidString onHold:(BOOL)onHold)
 RCT_EXPORT_METHOD(_startCallActionEventListenerAdded)
 {
     _isStartCallActionEventListenerAdded = YES;
+    
+    if (startCallNotification) {
+        [self handleStartCallNotification:startcallNotification];
+        startCallNotification = nil;
+    }
 }
 
 RCT_EXPORT_METHOD(reportConnectedOutgoingCallWithUUID:(NSString *)uuidString)
@@ -389,17 +394,19 @@ continueUserActivity:(NSUserActivity *)userActivity
 #ifdef DEBUG
     NSLog(@"[RNCallKit][handleStartCallNotification] userInfo = %@", notification.userInfo);
 #endif
-    int delayInSeconds;
     if (!_isStartCallActionEventListenerAdded) {
-        // Workaround for when app is just launched and JS side hasn't registered to the event properly
-        delayInSeconds = DelayInSeconds;
+        startCallNotification = notification;
     } else {
-        delayInSeconds = 0;
+        void (^sendStartCallEventBlock)() = ^void() {
+            [self sendEventWithName:RNCallKitDidReceiveStartCallAction body:notification.userInfo];
+        };
+        
+        if ([NSThread isMainThread]) {
+            sendStartCallEventBlock();
+        } else {
+            dispatch_sync(dispatch_get_main_queue(), sendStartCallEventBlock);
+        }
     }
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^{
-        [self sendEventWithName:RNCallKitDidReceiveStartCallAction body:notification.userInfo];
-    });
 }
 
 #pragma mark - CXProviderDelegate
