@@ -140,6 +140,20 @@ Initialise RNCallKit with options
 
 Call when you receive incoming calls to display system UI
 
+### updateIncomingCall
+
+- **uuid**: string
+- **handle**: string
+- **handleType**: string (optional)
+  - generic
+  - number (default)
+  - email
+- **hasVideo**: boolean (optional)
+  - false (default)
+- **localizedCallerName**: string (optional)
+
+Call when you have updated information about incoming calls to display
+
 ### startCall
 
 - **uuid**: string
