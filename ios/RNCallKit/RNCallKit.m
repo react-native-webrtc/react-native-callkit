@@ -67,7 +67,7 @@ RCT_EXPORT_MODULE()
              RNCallKitPerformEndCallAction,
              RNCallKitDidActivateAudioSession,
              RNCallKitDidDisplayIncomingCall,
-             RNCallKitDidPerformSetMutedCallAction
+             RNCallKitDidPerformSetMutedCallAction,
              ];
 }
 
@@ -183,6 +183,42 @@ RCT_EXPORT_METHOD(endAllCalls)
         [self requestTransaction:transaction];
     }
 }
+
+
+//
+
+
+
+RCT_REMAP_METHOD(checkIfInCall,
+                 checkIfInCallWithResolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject)
+{
+    for (CXCall *call in self.callKitCallController.callObserver.calls) {
+        if (call.hasEnded == false) {
+            NSLog(@"CXCallState: inCall");
+            resolve(@"true");
+            break;
+        } else {
+            NSLog(@"CXCallState: not inCall");
+        }
+    }
+    
+    
+}
+
+RCT_EXPORT_METHOD(deviceStatus)
+{
+    for (CXCall *call1 in self.callKitCallController.callObserver.calls) {
+        if (call1.hasEnded == false) {
+            NSLog(@"CXCallState: inCall");
+        } else {
+            NSLog(@"CXCallState: not inCall");
+        }
+    }
+ }
+
+//
+
 
 RCT_EXPORT_METHOD(setHeldCall:(NSString *)uuidString onHold:(BOOL)onHold)
 {
