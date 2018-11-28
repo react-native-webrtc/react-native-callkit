@@ -185,37 +185,29 @@ RCT_EXPORT_METHOD(endAllCalls)
 }
 
 
-//
-
-
+// check If In Call
 
 RCT_REMAP_METHOD(checkIfInCall,
                  checkIfInCallWithResolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 {
-    for (CXCall *call in self.callKitCallController.callObserver.calls) {
-        if (call.hasEnded == false) {
-            NSLog(@"CXCallState: inCall");
-            resolve(@"true");
-            break;
-        } else {
-            NSLog(@"CXCallState: not inCall");
+    int flag = 0;
+    @try {
+        for (CXCall *call in self.callKitCallController.callObserver.calls) {
+            if (call.hasEnded == false) {
+                flag = 1;
+                resolve(@"true");
+                break;
+            }
+        }
+        if(flag == 0) {
+            resolve(@"false");
         }
     }
-    
-    
+    @catch (NSException *exception) {
+        NSLog(@"%@", exception.reason);
+    } 
 }
-
-RCT_EXPORT_METHOD(deviceStatus)
-{
-    for (CXCall *call1 in self.callKitCallController.callObserver.calls) {
-        if (call1.hasEnded == false) {
-            NSLog(@"CXCallState: inCall");
-        } else {
-            NSLog(@"CXCallState: not inCall");
-        }
-    }
- }
 
 //
 
