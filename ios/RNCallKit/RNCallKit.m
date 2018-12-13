@@ -188,24 +188,25 @@ RCT_EXPORT_METHOD(endAllCalls)
 
 
 // check If In Call
-
 RCT_EXPORT_METHOD(checkIfInCall:(NSString *)uuidString
                  checkIfInCallWithResolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 {
     int flag = 0;
-    NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidString];
-    NSLog(@"[RNCallKit][checkIfInCall] uuid = %@", uuid);
     @try {
         for (CXCall *call in self.callKitCallController.callObserver.calls) {
+            NSString *callUid = [call.UUID UUIDString];
             NSLog(@"[RNCallKit][checkIfInCall] call UUID = %@", call.UUID);
-            if (call.hasEnded == false && uuid != call.UUID) {
+            NSLog(@"[RNCallKit][checkIfInCall] call Ended = %d", call.hasEnded);
+            NSLog(@"[RNCallKit][checkIfInCall] My Call %d", [uuidString isEqualToString:callUid]);
+            if (call.hasEnded == false &&  ![uuidString isEqualToString:callUid]) {
                 flag = 1;
-                resolve(@{@"inCall": @YES});
                 break;
             }
         }
-        if(flag == 0) {
+        if(flag == 1) {
+            resolve(@{@"inCall": @YES});
+        } else {
             resolve(@{@"inCall": @NO});
         }
     }
@@ -213,7 +214,6 @@ RCT_EXPORT_METHOD(checkIfInCall:(NSString *)uuidString
         NSLog(@"[RNCallKit][checkIfInCall] exception %@", exception.reason);
     } 
 }
-
 //
 
 
