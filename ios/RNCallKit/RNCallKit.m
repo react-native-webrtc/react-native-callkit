@@ -211,7 +211,6 @@ RCT_EXPORT_METHOD(checkIfInCall:(NSString *)uuidString
     }
     @catch (NSException *exception) {
         NSLog(@"[RNCallKit][checkIfInCall] exception %@", exception.reason);
-        reject(@{@"error": exception.reason});
     } 
 }
 
