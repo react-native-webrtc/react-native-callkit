@@ -24,6 +24,7 @@ static NSString *const RNCallKitPerformEndCallAction = @"RNCallKitPerformEndCall
 static NSString *const RNCallKitDidActivateAudioSession = @"RNCallKitDidActivateAudioSession";
 static NSString *const RNCallKitDidDisplayIncomingCall = @"RNCallKitDidDisplayIncomingCall";
 static NSString *const RNCallKitDidPerformSetMutedCallAction = @"RNCallKitDidPerformSetMutedCallAction";
+static NSString *const RNCallKitCheckIfInCallAction = @"RNCallKitCheckIfInCallAction";
 
 @implementation RNCallKit
 {
@@ -68,6 +69,7 @@ RCT_EXPORT_MODULE()
              RNCallKitDidActivateAudioSession,
              RNCallKitDidDisplayIncomingCall,
              RNCallKitDidPerformSetMutedCallAction,
+             RNCallKitCheckIfInCallAction
              ];
 }
 
@@ -187,25 +189,28 @@ RCT_EXPORT_METHOD(endAllCalls)
 
 // check If In Call
 
-RCT_REMAP_METHOD(checkIfInCall,
+RCT_EXPORT_METHOD(checkIfInCall:(NSString *)uuidString
                  checkIfInCallWithResolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 {
     int flag = 0;
+    NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidString];
+    NSLog(@"[RNCallKit][checkIfInCall] uuid = %@", uuid);
     @try {
         for (CXCall *call in self.callKitCallController.callObserver.calls) {
-            if (call.hasEnded == false) {
+            NSLog(@"[RNCallKit][checkIfInCall] call UUID = %@", call.UUID);
+            if (call.hasEnded == false && uuid != call.UUID) {
                 flag = 1;
-                resolve(@"true");
+                resolve(@{@"inCall": @YES});
                 break;
             }
         }
         if(flag == 0) {
-            resolve(@"false");
+            resolve(@{@"inCall": @NO});
         }
     }
     @catch (NSException *exception) {
-        NSLog(@"%@", exception.reason);
+        NSLog(@"[RNCallKit][checkIfInCall] exception %@", exception.reason);
     } 
 }
 

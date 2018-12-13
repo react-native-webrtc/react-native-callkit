@@ -104,9 +104,9 @@ export default class RNCallKit {
         _RNCallKit.endAllCalls();
     }
 
-    static checkIfInCall() {
+    static checkIfInCall(uuid) {
         return Platform.OS === 'ios' ?
-        _RNCallKit.checkIfInCall() :
+        _RNCallKit.checkIfInCall(uuid) :
         Promise.reject('RNCallKit.checkIfInCall was called from unsupported OS');
 
     }
