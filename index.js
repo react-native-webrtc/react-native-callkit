@@ -79,12 +79,12 @@ export default class RNCallKit {
         _RNCallKit.setup(options);
     }
 
-    static displayIncomingCall(uuid, handle, handleType = 'number', hasVideo = false, localizedCallerName?: String) {
+    static displayIncomingCall(uuid, handle, handleType = 'number', hasVideo = false, localizedCallerName, showConnectingStatus = false) {
         if (Platform.OS !== 'ios') return;
-        _RNCallKit.displayIncomingCall(uuid, handle, handleType, hasVideo, localizedCallerName);
+        _RNCallKit.displayIncomingCall(uuid, handle, handleType, hasVideo, localizedCallerName, showConnectingStatus);
     }
 
-    static startCall(uuid, handle, handleType = 'number', hasVideo = false, contactIdentifier?: String) {
+    static startCall(uuid, handle, handleType = 'number', hasVideo = false, contactIdentifier) {
         if (Platform.OS !== 'ios') return;
         _RNCallKit.startCall(uuid, handle, handleType, hasVideo, contactIdentifier);
     }

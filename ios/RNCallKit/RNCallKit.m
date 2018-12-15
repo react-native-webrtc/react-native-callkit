@@ -31,6 +31,7 @@ static NSString *const RNCallKitDidPerformSetMutedCallAction = @"RNCallKitDidPer
     NSOperatingSystemVersion _version;
     BOOL _isStartCallActionEventListenerAdded;
     CXAnswerCallAction *answerCallAction;
+    BOOL shouldShowConnectionState;
 }
 
 // should initialise in AppDelegate.m
@@ -47,6 +48,7 @@ RCT_EXPORT_MODULE()
                                                      name:RNCallKitHandleStartCallNotification
                                                    object:nil];
         _isStartCallActionEventListenerAdded = NO;
+        shouldShowConnectionState = false;
     }
     return self;
 }
@@ -112,7 +114,8 @@ RCT_EXPORT_METHOD(displayIncomingCall:(NSString *)uuidString
                                handle:(NSString *)handle
                            handleType:(NSString *)handleType
                              hasVideo:(BOOL)hasVideo
-                  localizedCallerName:(NSString * _Nullable)localizedCallerName)
+                  localizedCallerName:(NSString * _Nullable)localizedCallerName
+                  showConnectionState:(BOOL)showConnectionState)
 {
 #ifdef DEBUG
     NSLog(@"[RNCallKit][displayIncomingCall] uuidString = %@", uuidString);
@@ -128,6 +131,7 @@ RCT_EXPORT_METHOD(displayIncomingCall:(NSString *)uuidString
     callUpdate.supportsUngrouping = NO;
     callUpdate.hasVideo = hasVideo;
     callUpdate.localizedCallerName = localizedCallerName;
+    shouldShowConnectionState = showConnectionState;
 
     [self.callKitProvider reportNewIncomingCallWithUUID:uuid update:callUpdate completion:^(NSError * _Nullable error) {
         [self sendEventWithName:RNCallKitDidDisplayIncomingCall body:@{ @"error": error ? error.localizedDescription : @"" }];
@@ -445,7 +449,11 @@ continueUserActivity:(NSUserActivity *)userActivity
     }
     NSString *callUUID = [self containsLowerCaseLetter:action.callUUID.UUIDString] ? action.callUUID.UUIDString : [action.callUUID.UUIDString lowercaseString];
     [self sendEventWithName:RNCallKitPerformAnswerCallAction body:@{ @"callUUID": callUUID }];
-    answerCallAction = action;
+    if (shouldShowConnectionState) {
+        answerCallAction = action;
+    } else {
+        [action fullfill];
+    }
 }
 
 // Ending incoming call
