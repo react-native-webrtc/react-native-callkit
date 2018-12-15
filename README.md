@@ -138,7 +138,7 @@ Initialise RNCallKit with options
   - false (default)
 - **localizedCallerName**: string (optional)
 - **showConnectionState**: boolean (optional)
-  - `false` by default, set it to `true` if you wish to show the user connecting status after hitting the answer button. Note that you will need to update the connection status using `updateConnectionState(connected: boolean)`.
+  - `false` by default, set it to `true` if you wish to show the user connecting state after hitting the answer button. Note that you will need to update the connection state using `updateConnectionState(connected: boolean)`.
 
 Call when you receive incoming calls to display system UI
 
