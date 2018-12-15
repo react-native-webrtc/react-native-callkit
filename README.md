@@ -137,7 +137,7 @@ Initialise RNCallKit with options
 - **hasVideo**: boolean (optional)
   - false (default)
 - **localizedCallerName**: string (optional)
-- **showConnectingStatus**: boolean (optional)
+- **showConnectionState**: boolean (optional)
   - `false` by default, set it to `true` if you wish to show the user connecting status after hitting the answer button. Note that you will need to update the connection status using `updateConnectionState(connected: boolean)`.
 
 Call when you receive incoming calls to display system UI
@@ -301,9 +301,6 @@ class RNCallKitExample extends React.Component {
      *
      * e.g. this.handleAnswerCall(data.callUUID);
      *
-     * Call RNCallKit.updateConnectionState(true) if connection is established
-     *
-     * or RNCallKit.updateConnectionState(false) if connection is failed
      */
   }
 

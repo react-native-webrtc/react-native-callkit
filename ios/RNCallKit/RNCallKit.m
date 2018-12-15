@@ -30,8 +30,8 @@ static NSString *const RNCallKitDidPerformSetMutedCallAction = @"RNCallKitDidPer
     NSMutableDictionary *_settings;
     NSOperatingSystemVersion _version;
     BOOL _isStartCallActionEventListenerAdded;
-    CXAnswerCallAction *answerCallAction;
-    BOOL shouldShowConnectionState;
+    CXAnswerCallAction *_answerCallAction;
+    BOOL _shouldShowConnectionState;
 }
 
 // should initialise in AppDelegate.m
@@ -48,7 +48,7 @@ RCT_EXPORT_MODULE()
                                                      name:RNCallKitHandleStartCallNotification
                                                    object:nil];
         _isStartCallActionEventListenerAdded = NO;
-        shouldShowConnectionState = false;
+        _shouldShowConnectionState = NO;
     }
     return self;
 }
@@ -114,7 +114,7 @@ RCT_EXPORT_METHOD(displayIncomingCall:(NSString *)uuidString
                                handle:(NSString *)handle
                            handleType:(NSString *)handleType
                              hasVideo:(BOOL)hasVideo
-                  localizedCallerName:(NSString * _Nullable)localizedCallerName
+                  localizedCallerName:(NSString *)localizedCallerName
                   showConnectionState:(BOOL)showConnectionState)
 {
 #ifdef DEBUG
@@ -130,8 +130,10 @@ RCT_EXPORT_METHOD(displayIncomingCall:(NSString *)uuidString
     callUpdate.supportsGrouping = NO;
     callUpdate.supportsUngrouping = NO;
     callUpdate.hasVideo = hasVideo;
-    callUpdate.localizedCallerName = localizedCallerName;
-    shouldShowConnectionState = showConnectionState;
+    if ([localizedCallerName length] > 0) {
+        callUpdate.localizedCallerName = localizedCallerName;
+    }
+    _shouldShowConnectionState = showConnectionState;
 
     [self.callKitProvider reportNewIncomingCallWithUUID:uuid update:callUpdate completion:^(NSError * _Nullable error) {
         [self sendEventWithName:RNCallKitDidDisplayIncomingCall body:@{ @"error": error ? error.localizedDescription : @"" }];
@@ -232,9 +234,9 @@ RCT_EXPORT_METHOD(updateConnectionState:(BOOL )connected)
     NSLog(@"[RNCallKit][updateConnectionState]");
 #endif
     if (connected) {
-        [answerCallAction fulfill];
+        [_answerCallAction fulfill];
     } else {
-        [answerCallAction fail];
+        [_answerCallAction fail];
     }
 }
 
@@ -449,8 +451,8 @@ continueUserActivity:(NSUserActivity *)userActivity
     }
     NSString *callUUID = [self containsLowerCaseLetter:action.callUUID.UUIDString] ? action.callUUID.UUIDString : [action.callUUID.UUIDString lowercaseString];
     [self sendEventWithName:RNCallKitPerformAnswerCallAction body:@{ @"callUUID": callUUID }];
-    if (shouldShowConnectionState) {
-        answerCallAction = action;
+    if (_shouldShowConnectionState) {
+        _answerCallAction = action;
     } else {
         [action fullfill];
     }

@@ -79,9 +79,9 @@ export default class RNCallKit {
         _RNCallKit.setup(options);
     }
 
-    static displayIncomingCall(uuid, handle, handleType = 'number', hasVideo = false, localizedCallerName, showConnectingStatus = false) {
+    static displayIncomingCall(uuid, handle, handleType = 'number', hasVideo = false, localizedCallerName = '', showConnectionState = false) {
         if (Platform.OS !== 'ios') return;
-        _RNCallKit.displayIncomingCall(uuid, handle, handleType, hasVideo, localizedCallerName, showConnectingStatus);
+        _RNCallKit.displayIncomingCall(uuid, handle, handleType, hasVideo, localizedCallerName, showConnectionState);
     }
 
     static startCall(uuid, handle, handleType = 'number', hasVideo = false, contactIdentifier) {
