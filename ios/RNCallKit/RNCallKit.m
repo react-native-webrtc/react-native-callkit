@@ -24,6 +24,7 @@ static NSString *const RNCallKitPerformEndCallAction = @"RNCallKitPerformEndCall
 static NSString *const RNCallKitDidActivateAudioSession = @"RNCallKitDidActivateAudioSession";
 static NSString *const RNCallKitDidDisplayIncomingCall = @"RNCallKitDidDisplayIncomingCall";
 static NSString *const RNCallKitDidPerformSetMutedCallAction = @"RNCallKitDidPerformSetMutedCallAction";
+static NSString *const RNCallKitDidReceiveDTMFCallAction = @"RNCallKitDidReceiveDTMFCallAction";
 
 @implementation RNCallKit
 {
@@ -67,7 +68,8 @@ RCT_EXPORT_MODULE()
              RNCallKitPerformEndCallAction,
              RNCallKitDidActivateAudioSession,
              RNCallKitDidDisplayIncomingCall,
-             RNCallKitDidPerformSetMutedCallAction
+             RNCallKitDidPerformSetMutedCallAction,
+             RNCallKitDidReceiveDTMFCallAction
              ];
 }
 
@@ -481,6 +483,17 @@ continueUserActivity:(NSUserActivity *)userActivity
     NSLog(@"[RNCallKit][CXProviderDelegate][provider:performSetMutedCallAction]");
 #endif
     [self sendEventWithName:RNCallKitDidPerformSetMutedCallAction body:@{ @"muted": @(action.muted) }];
+    [action fulfill];
+}
+
+-(void)provider:(CXProvider *)provider performPlayDTMFCallAction:(CXPlayDTMFCallAction *)action
+{
+
+#ifdef DEBUG
+    NSLog(@"[RNCallKit][CXProviderDelegate][provider:performPlayDTMFCallAction]");
+#endif
+    NSLog(@"%@", action);
+    [self sendEventWithName:RNCallKitDidReceiveDTMFCallAction body:@{ @"digits": action.digits }];
     [action fulfill];
 }
 
