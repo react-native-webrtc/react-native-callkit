@@ -238,6 +238,12 @@ A call was muted by the system or the user:
 
 **muted**: boolean
 
+### - didReceiveDTMFCallAction
+
+User is interacting with a number pad. He pressed a key.
+
+**digit**: string
+
 ## Usage
 
 ```javascript
@@ -268,6 +274,7 @@ class RNCallKitExample extends React.Component {
     RNCallKit.addEventListener('didActivateAudioSession', this.onRNCallKitDidActivateAudioSession);
     RNCallKit.addEventListener('didDisplayIncomingCall', this.onRNCallKitDidDisplayIncomingCall);
     RNCallKit.addEventListener('didPerformSetMutedCallAction', this.onRNCallKitDidPerformSetMutedCallAction);
+    RNCallKit.addEventListener('didReceiveDTMFCallAction', this.onRNCallKitDidReceiveDTMFCallAction)
   }
 
   onRNCallKitDidReceiveStartCallAction(data) {
@@ -317,6 +324,12 @@ class RNCallKitExample extends React.Component {
   onRNCallKitDidPerformSetMutedCallAction(muted) {
     /* You will get this event after the system or the user mutes a call
      * You can use it to toggle the mic on your custom call UI
+     */
+  }
+  
+  onRNCallKitDidReceiveDTMFCallAction(digit) {
+    /* You will get this event when user is interacting with a number pad
+     * "digit" is the key number that user pressed
      */
   }
 
