@@ -82,6 +82,12 @@ export default class RNCallKit {
         : Promise.reject('RNCallKit.checkSpeaker was called from unsupported OS');
     }
 
+    static reportUpdatedCall(uuid, localizedCallerName?: String) {
+      return Platform.OS === 'ios'
+        ? _RNCallKit.reportUpdatedCall(uuid, localizedCallerName)
+        : Promise.reject('RNCallKit.reportUpdatedCall was called from unsupported OS');
+    }
+
     /*
     static setHeldCall(uuid, onHold) {
         if (Platform.OS !== 'ios') return;

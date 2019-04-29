@@ -422,6 +422,19 @@ continueUserActivity:(NSUserActivity *)userActivity
     [action fulfill];
 }
 
+// Update call contact info
+RCT_EXPORT_METHOD(reportUpdatedCall:(NSString *)uuidString contactIdentifier:(NSString *)contactIdentifier)
+{
+#ifdef DEBUG
+    NSLog(@"[RNCallKit][reportUpdatedCall] contactIdentifier = %i", contactIdentifier);
+#endif
+    NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidString];
+    CXCallUpdate *callUpdate = [[CXCallUpdate alloc] init];
+    callUpdate.localizedCallerName = contactIdentifier;
+
+    [self.callKitProvider reportCallWithUUID:uuid updated:callUpdate];
+}
+
 // Answering incoming call
 - (void)provider:(CXProvider *)provider performAnswerCallAction:(CXAnswerCallAction *)action
 {
