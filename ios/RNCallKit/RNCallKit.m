@@ -241,11 +241,11 @@ RCT_EXPORT_METHOD(setMutedCall:(NSString *)uuidString muted:(BOOL)muted)
                 CXCallUpdate *callUpdate = [[CXCallUpdate alloc] init];
                 callUpdate.remoteHandle = startCallAction.handle;
                 callUpdate.localizedCallerName = startCallAction.contactIdentifier;
+                callUpdate.hasVideo = startCallAction.video;
                 callUpdate.supportsDTMF = YES;
                 callUpdate.supportsHolding = NO;
                 callUpdate.supportsGrouping = NO;
                 callUpdate.supportsUngrouping = NO;
-                callUpdate.hasVideo = NO;
                 [self.callKitProvider reportCallWithUUID:startCallAction.callUUID updated:callUpdate];
             }
         }
