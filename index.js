@@ -65,7 +65,7 @@ export default class RNCallKit {
         _RNCallKit.endAllCalls();
     }
 
-    static setMutedCAll(uuid, muted) {
+    static setMutedCall(uuid, muted) {
         if (Platform.OS !== 'ios') return;
         _RNCallKit.setMutedCall(uuid, muted);
     }
