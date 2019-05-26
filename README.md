@@ -1,4 +1,10 @@
-# React Native CallKit - iOS >= 10.0 only
+# DEPRECATED
+
+# This is no longer supported, please use [react-native-callkeep](https://github.com/react-native-webrtc/react-native-callkeep) instead.
+
+--
+
+## React Native CallKit - iOS >= 10.0 only
 
 [![npm version](https://badge.fury.io/js/react-native-callkit.svg)](https://badge.fury.io/js/react-native-callkit)
 [![npm downloads](https://img.shields.io/npm/dm/react-native-callkit.svg?maxAge=2592000)](https://img.shields.io/npm/dm/react-native-callkit.svg?maxAge=2592000)
