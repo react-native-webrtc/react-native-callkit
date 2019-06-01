@@ -24,6 +24,7 @@ static NSString *const RNCallKitPerformEndCallAction = @"RNCallKitPerformEndCall
 static NSString *const RNCallKitDidActivateAudioSession = @"RNCallKitDidActivateAudioSession";
 static NSString *const RNCallKitDidDisplayIncomingCall = @"RNCallKitDidDisplayIncomingCall";
 static NSString *const RNCallKitDidPerformSetMutedCallAction = @"RNCallKitDidPerformSetMutedCallAction";
+static NSString *const RNCallKitCheckIfInCallAction = @"RNCallKitCheckIfInCallAction";
 
 @implementation RNCallKit
 {
@@ -67,7 +68,8 @@ RCT_EXPORT_MODULE()
              RNCallKitPerformEndCallAction,
              RNCallKitDidActivateAudioSession,
              RNCallKitDidDisplayIncomingCall,
-             RNCallKitDidPerformSetMutedCallAction
+             RNCallKitDidPerformSetMutedCallAction,
+             RNCallKitCheckIfInCallAction
              ];
 }
 
@@ -183,6 +185,37 @@ RCT_EXPORT_METHOD(endAllCalls)
         [self requestTransaction:transaction];
     }
 }
+
+
+// check If In Call
+RCT_EXPORT_METHOD(checkIfInCall:(NSString *)uuidString
+                 checkIfInCallWithResolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject)
+{
+    int flag = 0;
+    @try {
+        for (CXCall *call in self.callKitCallController.callObserver.calls) {
+            NSString *callUid = [call.UUID UUIDString];
+            NSLog(@"[RNCallKit][checkIfInCall] call UUID = %@", call.UUID);
+            NSLog(@"[RNCallKit][checkIfInCall] call Ended = %d", call.hasEnded);
+            NSLog(@"[RNCallKit][checkIfInCall] My Call %d", [uuidString isEqualToString:callUid]);
+            if (call.hasEnded == false &&  ![uuidString isEqualToString:callUid]) {
+                flag = 1;
+                break;
+            }
+        }
+        if(flag == 1) {
+            resolve(@{@"inCall": @YES});
+        } else {
+            resolve(@{@"inCall": @NO});
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"[RNCallKit][checkIfInCall] exception %@", exception.reason);
+    } 
+}
+//
+
 
 RCT_EXPORT_METHOD(setHeldCall:(NSString *)uuidString onHold:(BOOL)onHold)
 {
