@@ -139,6 +139,30 @@ RCT_EXPORT_METHOD(displayIncomingCall:(NSString *)uuidString
     }];
 }
 
+// Update display information about the incoming call
+RCT_EXPORT_METHOD(updateIncomingCall:(NSString *)uuidString
+                               handle:(NSString *)handle
+                           handleType:(NSString *)handleType
+                             hasVideo:(BOOL)hasVideo
+                  localizedCallerName:(NSString * _Nullable)localizedCallerName)
+{
+#ifdef DEBUG
+    NSLog(@"[RNCallKit][updateIncomingCall] uuidString = %@", uuidString);
+#endif
+    int _handleType = [self getHandleType:handleType];
+    NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidString];
+    CXCallUpdate *callUpdate = [[CXCallUpdate alloc] init];
+    callUpdate.remoteHandle = [[CXHandle alloc] initWithType:_handleType value:handle];
+    callUpdate.supportsDTMF = YES;
+    // TODO: Holding
+    callUpdate.supportsHolding = NO;
+    callUpdate.supportsGrouping = NO;
+    callUpdate.supportsUngrouping = NO;
+    callUpdate.hasVideo = hasVideo;
+    callUpdate.localizedCallerName = localizedCallerName;
+    [self.callKitProvider reportCallWithUUID:uuid updated:callUpdate];
+}
+
 RCT_EXPORT_METHOD(startCall:(NSString *)uuidString
                      handle:(NSString *)handle
                  handleType:(NSString *)handleType
