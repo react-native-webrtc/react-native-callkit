@@ -40,12 +40,12 @@ export default class RNCallKit {
         _RNCallKit.setup(options);
     }
 
-    static displayIncomingCall(uuid, handle, handleType = 'number', hasVideo = false, localizedCallerName?: String) {
+    static displayIncomingCall(uuid, handle, handleType = 'number', hasVideo = false, localizedCallerName = '', showConnectionState = false) {
         if (Platform.OS !== 'ios') return;
-        _RNCallKit.displayIncomingCall(uuid, handle, handleType, hasVideo, localizedCallerName);
+        _RNCallKit.displayIncomingCall(uuid, handle, handleType, hasVideo, localizedCallerName, showConnectionState);
     }
 
-    static startCall(uuid, handle, handleType = 'number', hasVideo = false, contactIdentifier?: String) {
+    static startCall(uuid, handle, handleType = 'number', hasVideo = false, contactIdentifier) {
         if (Platform.OS !== 'ios') return;
         _RNCallKit.startCall(uuid, handle, handleType, hasVideo, contactIdentifier);
     }
@@ -80,6 +80,11 @@ export default class RNCallKit {
       return Platform.OS === 'ios'
         ? _RNCallKit.checkSpeaker()
         : Promise.reject('RNCallKit.checkSpeaker was called from unsupported OS');
+    }
+
+    static updateConnectionState(connected = true) {
+      if (Platform.OS !== 'ios') return;
+      _RNCallKit.updateConnectionState(connected);
     }
 
     /*
