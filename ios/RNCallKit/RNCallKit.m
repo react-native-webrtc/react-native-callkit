@@ -30,6 +30,7 @@ static NSString *const RNCallKitDidPerformSetMutedCallAction = @"RNCallKitDidPer
     NSMutableDictionary *_settings;
     NSOperatingSystemVersion _version;
     BOOL _isStartCallActionEventListenerAdded;
+    NSUUID *_lastUUID;
 }
 
 // should initialise in AppDelegate.m
@@ -118,6 +119,7 @@ RCT_EXPORT_METHOD(displayIncomingCall:(NSString *)uuidString
 #endif
     int _handleType = [self getHandleType:handleType];
     NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidString];
+    _lastUUID = uuid;
     CXCallUpdate *callUpdate = [[CXCallUpdate alloc] init];
     callUpdate.remoteHandle = [[CXHandle alloc] initWithType:_handleType value:handle];
     callUpdate.supportsDTMF = YES;
@@ -205,6 +207,7 @@ RCT_EXPORT_METHOD(_startCallActionEventListenerAdded)
 RCT_EXPORT_METHOD(reportConnectedOutgoingCallWithUUID:(NSString *)uuidString)
 {
     NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidString];
+    _lastUUID = uuid;
     [self.callKitProvider reportOutgoingCallWithUUID:uuid connectedAtDate:[NSDate date]];
 }
 
@@ -299,6 +302,11 @@ RCT_EXPORT_METHOD(setMutedCall:(NSString *)uuidString muted:(BOOL)muted)
     if (_settings[@"ringtoneSound"]) {
         providerConfiguration.ringtoneSound = _settings[@"ringtoneSound"];
     }
+    if (@available(iOS 11.0, *)) {
+        if (_settings[@"includesInRecents"]) {
+            providerConfiguration.includesCallsInRecents = [_settings[@"includesInRecents"] boolValue];
+        }
+    }
     return providerConfiguration;
 }
 
@@ -311,7 +319,7 @@ RCT_EXPORT_METHOD(setMutedCall:(NSString *)uuidString muted:(BOOL)muted)
     AVAudioSession* audioSession = [AVAudioSession sharedInstance];
     [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
 
-    [audioSession setMode:AVAudioSessionModeVoiceChat error:nil];
+    [audioSession setMode:AVAudioSessionModeVideoChat error:nil];
 
     double sampleRate = 44100.0;
     [audioSession setPreferredSampleRate:sampleRate error:nil];
@@ -451,6 +459,7 @@ continueUserActivity:(NSUserActivity *)userActivity
 #ifdef DEBUG
     NSLog(@"[RNCallKit][CXProviderDelegate][provider:performSetHeldCallAction]");
 #endif
+    [action fulfill];
 }
 
 - (void)provider:(CXProvider *)provider timedOutPerformingAction:(CXAction *)action
