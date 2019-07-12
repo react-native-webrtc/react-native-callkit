@@ -484,4 +484,9 @@ continueUserActivity:(NSUserActivity *)userActivity
     [action fulfill];
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+  return YES;
+}
+
 @end
